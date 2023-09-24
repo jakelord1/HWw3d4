@@ -8,8 +8,13 @@ public:
 	ID() = default;
 	ID(int n, char l) { num = n; let - l; }
 	friend ostream& operator<<(ostream& os, const ID obj) { os << obj.num << obj.let; }
+	ID operator+(int obj);
 	ID operator+(ID& obj);
+
+	ID operator-(int obj);
 	ID operator-(ID& obj);
+
+	ID operator*(int obj);
 	ID operator*(ID& obj);
 };
 

@@ -1,5 +1,5 @@
 #pragma once
-
+using namespace std;
 template<class A = int>
 class Matrix
 {
@@ -11,7 +11,7 @@ public:
 	Matrix(int r, int c);
 	Matrix(const Matrix& obj);
 	~Matrix();
-	friend ostream& operator<<(ostream& os, const Matrix<A>& obj) //you yourself allowed the use of Friend for cin and cout overloading
+	friend ostream& operator<<(ostream& os, const Matrix<A>& obj) const//you yourself allowed the use of Friend for cin and cout overloading
 	{
 		for (size_t i = 0; i < rows; i++)
 		{
@@ -22,14 +22,14 @@ public:
 			os << endl;
 		}
 	} 
-	Matrix<A>  operator+(int n);
-	Matrix<A>  operator+(ID& obj);
+	Matrix<A>  operator+(int n) const;
+	Matrix<A>  operator+(Matrix<A>& obj) const;
 
-	Matrix<A>  operator-(int n);
-	Matrix<A>  operator-(ID& obj);
+	Matrix<A>  operator-(int n) const;
+	Matrix<A>  operator-(Matrix<A>& obj) const;
 
-	Matrix<A>  operator*(int n);
-	Matrix<A>  operator*(ID& obj);
+	Matrix<A>  operator*(int n) const;
+	Matrix<A>  operator*(Matrix<A>& obj) const;
 
 	//matrices cannot be divided
 
@@ -106,42 +106,94 @@ inline Matrix<A>::~Matrix()
 }
 
 template<class A>
-inline Matrix<A> Matrix<A>::operator+(int n)
+inline Matrix<A> Matrix<A>::operator+(int n) const
 {
 	Matrix<A> buff = this;
 	for (size_t i = 0; i < rows; i++)
 	{
 		for (size_t j = 0; j < cols; j++)
 		{
-			arr[i][j] = arr[i][j] + n;
+			buff.arr[i][j] = buff.arr[i][j] + n;
 		}
 	}
 	return buff;
 }
 
 template<class A>
-inline Matrix<A> Matrix<A>::operator-(int n)
+inline Matrix<A> Matrix<A>::operator+(Matrix<A>& obj) const
+{
+	if (rows == obj.rows && cols == obj.cols) {
+		Matrix<A> buff = this;
+		for (size_t i = 0; i < rows; i++)
+		{
+			for (size_t j = 0; j < cols; j++)
+			{
+				buff.arr[i][j] = buff.arr[i][j] + obj.arr[i][j];
+			}
+		}
+		return buff;
+	}
+	else
+		return obj;
+}
+template<class A>
+inline Matrix<A> Matrix<A>::operator-(Matrix<A>& obj) const
+{
+	if (rows == obj.rows && cols == obj.cols) {
+		Matrix<A> buff = this;
+		for (size_t i = 0; i < rows; i++)
+		{
+			for (size_t j = 0; j < cols; j++)
+			{
+				buff.arr[i][j] = buff.arr[i][j] - obj.arr[i][j];
+			}
+		}
+		return buff;
+	}
+	else
+		return obj;
+}
+template<class A>
+inline Matrix<A> Matrix<A>::operator*(Matrix<A>& obj) const
+{
+	if (rows == obj.rows && cols == obj.cols) {
+		Matrix<A> buff = this;
+		for (size_t i = 0; i < rows; i++)
+		{
+			for (size_t j = 0; j < cols; j++)
+			{
+				buff.arr[i][j] = buff.arr[i][j] * obj.arr[j][i];
+			}
+		}
+		return buff;
+	}
+	else
+		return obj;
+}
+
+template<class A>
+inline Matrix<A> Matrix<A>::operator-(int n)const
 {
 	Matrix<A> buff = this;
 	for (size_t i = 0; i < rows; i++)
 	{
 		for (size_t j = 0; j < cols; j++)
 		{
-			arr[i][j] = arr[i][j] - n;
+			buff.arr[i][j] = arr[i][j] - n;
 		}
 	}
 	return buff;
 }
 
 template<class A>
-inline Matrix<A> Matrix<A>::operator*(int n)
+inline Matrix<A> Matrix<A>::operator*(int n)const
 {
 	Matrix<A> buff = this;
 	for (size_t i = 0; i < rows; i++)
 	{
 		for (size_t j = 0; j < cols; j++)
 		{
-			arr[i][j] = arr[i][j] * n;
+			buff.arr[i][j] = buff.arr[i][j] * n;
 		}
 	}
 	return buff;
